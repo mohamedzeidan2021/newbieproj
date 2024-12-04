@@ -3314,7 +3314,7 @@ expo-status-bar@~2.0.0:
 
 expo@^52.0.14:
   version "52.0.14"
-  resolved "https://registry.npmjs.org/expo/-/expo-52.0.14.tgz"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.14.tgz#e99a921dc5caff4b5b68fa96069ba7c3e64c4d17"
   integrity sha512-omGLh6cmaFZPcvTuMZY9Pi0aBOseeJI7MjJAAbi2rFssNVJJme44jM0CJ4Hq3p/6XqSFlZMqnuAfsAAzm/c/Rg==
   dependencies:
     "@babel/runtime" "^7.20.0"
