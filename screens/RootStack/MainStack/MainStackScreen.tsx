@@ -7,14 +7,17 @@ import DetailScreen from "./DetailScreen/DetailScreen.main";
 import NewItemScreen from "../NewItemScreen/NewItemScreen.main";
 import NewHousingScreen from "../NewHousingScreen/NewHousingScreen.main";
 import ConfirmationScreen from "./ConfirmationScreen/ConfirmationScreen.main";
+import HouseDetailScreen from "./HouseDetailScreen/HouseDetailScreen.main";
 import MapScreen from "./MapScreen/MapScreen.main";
-import { SocialModel } from "../../../models/social";
+import { ItemModel } from "../../../models/item";
 import { TouchableOpacity, Text } from "react-native";
+import { HousingModel } from "../../../models/housing";
 
 export type MainStackParamList = {
   HomeScreen: undefined;
   FeedScreen: undefined;
-  DetailScreen: { social: SocialModel };
+  DetailScreen: { social: ItemModel };
+  HouseDetailScreen: {house: HousingModel}
   NewItemScreen: undefined;
   ConfirmationScreen: undefined;
   MapScreen: undefined;
@@ -73,6 +76,11 @@ export function MainStackScreen() {
         name="DetailScreen"
         options={{ headerShown: false }}
         component={DetailScreen}
+      />
+      <MainStack.Screen
+        name="HouseDetailScreen"
+        options={{ headerShown: false }}
+        component={HouseDetailScreen}
       />
       <MainStack.Screen
         name="NewItemScreen"

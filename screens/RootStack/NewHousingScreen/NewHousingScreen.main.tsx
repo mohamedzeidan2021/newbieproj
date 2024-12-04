@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Platform, View, Image } from "react-native";
+import { Platform, View, Image, Modal } from "react-native";
 import { Appbar, TextInput, Snackbar, Button } from "react-native-paper";
 import { getFileObjectAsync, uuid } from "../../../Utils";
 
 // See https://github.com/mmazzarolo/react-native-modal-datetime-picker
 // Most of the date picker code is directly sourced from the example.
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 // See https://docs.expo.io/versions/latest/sdk/imagepicker/
 // Most of the image picker code is directly sourced from the example.
@@ -14,13 +14,20 @@ import { styles } from "./NewHousingScreen.styles";
 
 import { getApp } from "firebase/app";
 import { collection, doc } from "firebase/firestore";
-import { SocialModel } from "../../../models/social";
+import { ItemModel } from "../../../models/item";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackScreen";
 import { getFirestore, addDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import MapView, { Marker } from "react-native-maps";
+import { HousingModel } from "../../../models/housing";
 
-interface Props {
+type LatLng = {
+  latitude: number,
+  longitude: number,
+}
+
+interface Props { 
   navigation: StackNavigationProp<RootStackParamList, "NewHousingScreen">;
 }
 
@@ -41,16 +48,33 @@ export default function NewHousingScreen({ navigation }: Props) {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date | null>(null);
   const [image, setImage] = useState<string | null>(null);
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState<LatLng | null>(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [tempPin, setTempPin] = useState<LatLng | null>(null);
+  const [isMapVisible, setMapVisible] = useState(false);
 
   const handleDismissSnackbar = () => setSnackbarVisible(false);
 
   const showDatePicker = () => setDatePickerVisibility(true);
   const hideDatePicker = () => setDatePickerVisibility(false);
+  const showMap = () => setMapVisible(true);
+  const hideMap = () => setMapVisible(false);
+
+  const handleSetLocation = () => {
+    if (tempPin) {
+      setLocation(tempPin); // Save the selected pin as the main location
+      console.log(`Location set: Latitude: ${tempPin.latitude}, Longitude: ${tempPin.longitude}`); // Log the coordinates
+    }
+    hideMap(); // Close the map modal
+  };
+
+  const handleMapPress = (event : any) => {
+    setTempPin(event.nativeEvent.coordinate); // Update the temporary pin location
+  };
   
+
 
   const handleConfirm = (selectedDate: Date) => {
     setDate(selectedDate);
@@ -86,7 +110,7 @@ export default function NewHousingScreen({ navigation }: Props) {
     // If there's a field that is missing data, then return and show an error
     // using the Snackbar.
 
-    if (!name || !description || !date || !image) {
+    if (!name || !description || !location) {
       setSnackbarVisible(true);
       return;
     }
@@ -100,34 +124,34 @@ export default function NewHousingScreen({ navigation }: Props) {
 
       // (0) Firebase Cloud Storage wants a Blob, so we first convert the file path
       // saved in our eventImage state variable to a Blob.
-      const response = await fetch(image);
-      const blob = await response.blob();
+      // const response = await fetch(image);
+      // const blob = await response.blob();
 
       // (1) Write the image to Firebase Cloud Storage. Make sure to do this
       // using an "await" keyword, since we're in an async function. Name it using
       // the uuid provided below.
       const db = getFirestore();
-      const storage = getStorage(getApp());
-      const storageRef = ref(storage, uuid() + ".jpg");
-      const result = await uploadBytes(storageRef, blob);
+      // const storage = getStorage(getApp());
+      // const storageRef = ref(storage, uuid() + ".jpg");
+      // const result = await uploadBytes(storageRef, blob);
       
       // (2) Get the download URL of the file we just wrote. We're going to put that
       // download URL into Firestore (where our data itself is stored). Make sure to
       // do this using an async keyword.
-      const downloadURL = await getDownloadURL(result.ref);
+      // const downloadURL = await getDownloadURL(result.ref);
 
       // (3) Construct & write the social model to the "socials" collection in Firestore.
       // The eventImage should be the downloadURL that we got from (3).
       // Make sure to do this using an async keyword.
-      const socialDoc: SocialModel = {
-        eventName: name,
-        eventDate: date.getTime(),
-        eventLocation: location,
-        eventDescription: description,
-        eventImage: downloadURL,
+      const housingDoc: HousingModel = {
+        houseName: name,
+        houseLatitude: location.latitude,
+        houseLongitude: location.longitude,
+        houseDescription: description,
+        houseImage: '',
       };
       
-      await addDoc(collection(db, "socials"), socialDoc);
+      await addDoc(collection(db, "housing"), housingDoc);
       // (4) If nothing threw an error, then go to confirmation screen (which is a screen you must implement).
       //     Otherwise, show an error.
       navigation.navigate("ConfirmationScreen");
@@ -151,7 +175,7 @@ export default function NewHousingScreen({ navigation }: Props) {
       <Bar />
       <View style={{ ...styles.container, padding: 20 }}>
         <TextInput
-          label="Event Name"
+          label="House Name"
           value={name}
           onChangeText={setName}
         />
@@ -161,26 +185,9 @@ export default function NewHousingScreen({ navigation }: Props) {
           onChangeText={setDescription}
           multiline
         />
-        <Button onPress={() => {}}>
-          {"Set Location"}
-        </Button>
-        <Button onPress={showDatePicker}>
-          {date ? date.toDateString() : "Pick a date"}
-        </Button>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="datetime"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-        <Button onPress={pickImage}>
-          {image ? "Change Image" : "Pick an Image"}
-        </Button>
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        )}
+        <Button onPress={() => setMapVisible(true)}>Set Location</Button>
         <Button onPress={saveEvent} loading={loading}>
-          Create Event
+          List Property
         </Button>
         <Snackbar
           visible={snackbarVisible}
@@ -189,6 +196,31 @@ export default function NewHousingScreen({ navigation }: Props) {
         >
           Please fill out all the fields
         </Snackbar>
+        <Modal visible={isMapVisible} animationType="slide">
+          <View style={{ flex: 1 }}>
+            <MapView
+              style={{ flex: 1 }}
+              initialRegion={{
+                latitude: 37.865495,
+                longitude: -122.265050,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
+              }}
+              onPress={(event) => setTempPin(event.nativeEvent.coordinate)}
+            >
+              {tempPin && <Marker coordinate={tempPin} />}
+            </MapView>
+            {/* Buttons Container */}
+            <View style={styles.mapButtonsContainer}>
+              <Button onPress={() => setMapVisible(false)} mode="outlined" style={styles.mapButton}>
+                Cancel
+              </Button>
+              <Button onPress={handleSetLocation} mode="contained" style={styles.mapButton}>
+                Set Location
+              </Button>
+            </View>
+          </View>
+        </Modal>
       </View>
     </>
   );

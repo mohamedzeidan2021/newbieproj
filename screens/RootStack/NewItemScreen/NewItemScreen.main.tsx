@@ -14,7 +14,7 @@ import { styles } from "./NewItemScreen.styles";
 
 import { getApp } from "firebase/app";
 import { collection, doc } from "firebase/firestore";
-import { SocialModel } from "../../../models/social";
+import { ItemModel } from "../../../models/item";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackScreen";
 import { getFirestore, addDoc } from "firebase/firestore";
@@ -41,7 +41,7 @@ export default function NewItemScreen({ navigation }: Props) {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date | null>(null);
   const [image, setImage] = useState<string | null>(null);
-  const [location, setLocation] = useState('');
+  const [price, setPrice] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -56,20 +56,6 @@ export default function NewItemScreen({ navigation }: Props) {
     hideDatePicker();
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
 
   // TODO: Follow the Expo Docs to implement the ImagePicker component.
   // https://docs.expo.io/versions/latest/sdk/imagepicker/
@@ -85,7 +71,7 @@ export default function NewItemScreen({ navigation }: Props) {
     // If there's a field that is missing data, then return and show an error
     // using the Snackbar.
 
-    if (!name || !description || !date || !image) {
+    if (!name || !description) {
       setSnackbarVisible(true);
       return;
     }
@@ -99,34 +85,35 @@ export default function NewItemScreen({ navigation }: Props) {
 
       // (0) Firebase Cloud Storage wants a Blob, so we first convert the file path
       // saved in our eventImage state variable to a Blob.
-      const response = await fetch(image);
-      const blob = await response.blob();
+      // const response = await fetch(image);
+      // const blob = await response.blob();
 
       // (1) Write the image to Firebase Cloud Storage. Make sure to do this
       // using an "await" keyword, since we're in an async function. Name it using
       // the uuid provided below.
       const db = getFirestore();
-      const storage = getStorage(getApp());
-      const storageRef = ref(storage, uuid() + ".jpg");
-      const result = await uploadBytes(storageRef, blob);
+      // const storage = getStorage(getApp());
+      // const storageRef = ref(storage, uuid() + ".jpg");
+      // const result = await uploadBytes(storageRef, blob);
       
       // (2) Get the download URL of the file we just wrote. We're going to put that
       // download URL into Firestore (where our data itself is stored). Make sure to
       // do this using an async keyword.
-      const downloadURL = await getDownloadURL(result.ref);
+      // const downloadURL = await getDownloadURL(result.ref);
 
       // (3) Construct & write the social model to the "socials" collection in Firestore.
       // The eventImage should be the downloadURL that we got from (3).
       // Make sure to do this using an async keyword.
-      const socialDoc: SocialModel = {
-        eventName: name,
-        eventDate: date.getTime(),
-        eventLocation: location,
-        eventDescription: description,
-        eventImage: downloadURL,
+      const currentDate = new Date()
+      const socialDoc: ItemModel = {
+        itemName: name,
+        itemDate: currentDate.toLocaleString(),
+        itemDescription: description,
+        itemImage: '',
+        itemPrice: price,
       };
       
-      await addDoc(collection(db, "socials"), socialDoc);
+      await addDoc(collection(db, "items"), socialDoc);
       // (4) If nothing threw an error, then go to confirmation screen (which is a screen you must implement).
       //     Otherwise, show an error.
       navigation.navigate("ConfirmationScreen");
@@ -162,24 +149,9 @@ export default function NewItemScreen({ navigation }: Props) {
         />
         <TextInput
           label="Price"
-          value={location}
-          onChangeText={setLocation}
+          value={price}
+          onChangeText={setPrice}
         />
-        <Button onPress={showDatePicker}>
-          {date ? date.toDateString() : "List Date"}
-        </Button>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="datetime"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-        <Button onPress={pickImage}>
-          {image ? "Change Image" : "Item Image"}
-        </Button>
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        )}
         <Button
           mode="contained" // Use "contained" to make the button have a background
           onPress={saveEvent}

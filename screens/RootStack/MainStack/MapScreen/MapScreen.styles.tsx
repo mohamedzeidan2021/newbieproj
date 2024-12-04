@@ -3,23 +3,27 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center', // Centers vertically
-    alignItems: 'center',      // Centers horizontally
-    backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 50,
-    marginBottom: 20,          // Space between title and first button
+  map: {
+    width: '100%',
+    height: '100%',
   },
-  button: {
-    marginVertical: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#2196F3', // Add a background color to the buttons
-    borderRadius: 5,
+  infoBox: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
-  linkText: {
-    color: '#fff',             // White text for the buttons
-    fontSize: 18,
+  infoText: {
+    fontSize: 16,
   },
+
 });

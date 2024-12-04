@@ -33,7 +33,7 @@
 import { getFirestore, doc, collection, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { getApp } from "firebase/app";
-import { SocialModel } from "../../../models/social";
+import { ItemModel } from "../../../models/social";
 import { getFileObjectAsync, uuid } from "../../../Utils";
 
 // This is the verbose, old way of doing things
@@ -49,7 +49,7 @@ const regularNetworkRequests = () => {
       .put(object as Blob)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
-          const doc: SocialModel = {
+          const doc: ItemModel = {
             eventName: eventName,
             eventDate: eventDate.getTime(),
             eventLocation: eventLocation,
@@ -81,7 +81,7 @@ const asyncAwaitNetworkRequests = async () => {
   const storageRef = ref(storage, uuid() + ".jpg");
   const result = await uploadBytes(storageRef, object);
   const downloadURL = await getDownloadURL(result.ref);
-  const socialDoc: SocialModel = {
+  const socialDoc: ItemModel = {
     eventName: eventName,
     eventDate: eventDate.getTime(),
     eventLocation: eventLocation,

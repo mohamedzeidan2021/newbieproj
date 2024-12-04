@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 import { styles } from './HomeScreen.styles'; 
 import { StackNavigationProp } from "@react-navigation/stack";
