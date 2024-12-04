@@ -22,19 +22,4 @@ export const styles = StyleSheet.create({
     color: '#fff',             // White text for the buttons
     fontSize: 18,
   },
-  modalContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  modalText: {
-    marginBottom: 20,
-    fontSize: 16,
-    textAlign: 'center',
-  },
 });

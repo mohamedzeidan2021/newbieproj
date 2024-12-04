@@ -10,7 +10,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 // See https://docs.expo.io/versions/latest/sdk/imagepicker/
 // Most of the image picker code is directly sourced from the example.
 import * as ImagePicker from "expo-image-picker";
-import { styles } from "./NewSocialScreen.styles";
+import { styles } from "./NewHousingScreen.styles";
 
 import { getApp } from "firebase/app";
 import { collection, doc } from "firebase/firestore";
@@ -21,10 +21,10 @@ import { getFirestore, addDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 interface Props {
-  navigation: StackNavigationProp<RootStackParamList, "NewSocialScreen">;
+  navigation: StackNavigationProp<RootStackParamList, "NewHousingScreen">;
 }
 
-export default function NewSocialScreen({ navigation }: Props) {
+export default function NewHousingScreen({ navigation }: Props) {
   /* TODO: Declare state variables for all of the attributes 
            that you need to keep track of on this screen.
     
@@ -50,6 +50,7 @@ export default function NewSocialScreen({ navigation }: Props) {
 
   const showDatePicker = () => setDatePickerVisibility(true);
   const hideDatePicker = () => setDatePickerVisibility(false);
+  
 
   const handleConfirm = (selectedDate: Date) => {
     setDate(selectedDate);
@@ -140,7 +141,7 @@ export default function NewSocialScreen({ navigation }: Props) {
     return (
       <Appbar.Header>
         <Appbar.Action onPress={navigation.goBack} icon="close" />
-        <Appbar.Content title="Socials" />
+        <Appbar.Content title="Housing" />
       </Appbar.Header>
     );
   };
@@ -160,11 +161,9 @@ export default function NewSocialScreen({ navigation }: Props) {
           onChangeText={setDescription}
           multiline
         />
-        <TextInput
-          label="Location"
-          value={location}
-          onChangeText={setLocation}
-        />
+        <Button onPress={() => {}}>
+          {"Set Location"}
+        </Button>
         <Button onPress={showDatePicker}>
           {date ? date.toDateString() : "Pick a date"}
         </Button>
