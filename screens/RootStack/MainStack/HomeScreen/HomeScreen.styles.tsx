@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 24,
+    fontSize: 50,
     marginBottom: 20,          // Space between title and first button
   },
   button: {

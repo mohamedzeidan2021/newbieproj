@@ -14,20 +14,20 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to MDB Socials!</Text>
+      <Text style={styles.title}>Cubby</Text>
 
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('FeedScreen')}
       >
-        <Text style={styles.linkText}>View events</Text>
+        <Text style={styles.linkText}>Shop</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('NewSocialScreen')}
       >
-        <Text style={styles.linkText}>Create new event</Text>
+        <Text style={styles.linkText}>Sell</Text>
       </TouchableOpacity>
     </View>
   );
