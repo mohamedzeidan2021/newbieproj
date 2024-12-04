@@ -140,7 +140,7 @@ export default function NewSocialScreen({ navigation }: Props) {
     return (
       <Appbar.Header>
         <Appbar.Action onPress={navigation.goBack} icon="close" />
-        <Appbar.Content title="Socials" />
+        <Appbar.Content title="List Item" />
       </Appbar.Header>
     );
   };
@@ -150,7 +150,7 @@ export default function NewSocialScreen({ navigation }: Props) {
       <Bar />
       <View style={{ ...styles.container, padding: 20 }}>
         <TextInput
-          label="Event Name"
+          label="Item Category"
           value={name}
           onChangeText={setName}
         />
@@ -161,12 +161,12 @@ export default function NewSocialScreen({ navigation }: Props) {
           multiline
         />
         <TextInput
-          label="Location"
+          label="Price"
           value={location}
           onChangeText={setLocation}
         />
         <Button onPress={showDatePicker}>
-          {date ? date.toDateString() : "Pick a date"}
+          {date ? date.toDateString() : "List Date"}
         </Button>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
@@ -175,13 +175,28 @@ export default function NewSocialScreen({ navigation }: Props) {
           onCancel={hideDatePicker}
         />
         <Button onPress={pickImage}>
-          {image ? "Change Image" : "Pick an Image"}
+          {image ? "Change Image" : "Item Image"}
         </Button>
         {image && (
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         )}
-        <Button onPress={saveEvent} loading={loading}>
-          Create Event
+        <Button
+          mode="contained" // Use "contained" to make the button have a background
+          onPress={saveEvent}
+          loading={loading}
+          style={{
+            backgroundColor: "#003262", // Set background color here
+            borderRadius: 5,           // Optional: Add rounded corners
+            paddingVertical: 5,       // Optional: Adjust padding
+            paddingHorizontal: 10,
+          }}
+          labelStyle={{
+            fontFamily: "Georgia", // Apply custom font to the text
+            fontSize: 16,
+            color: "#ffffff",      // Text color for contrast
+          }}
+        >
+          Submit
         </Button>
         <Snackbar
           visible={snackbarVisible}

@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
+    fontFamily: 'Georgia',
     fontSize: 24,
     marginBottom: 20,          // Space between title and first button
   },
@@ -19,6 +20,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
   },
   linkText: {
+    fontFamily: 'Georgia',
     color: '#fff',             // White text for the buttons
     fontSize: 18,
   },

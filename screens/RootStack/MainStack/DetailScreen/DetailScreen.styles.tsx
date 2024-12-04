@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     margin: 20,
   },
   subtitle: {
+    fontFamily: 'Georgia',
     color: "gray",
   },
   image: {
