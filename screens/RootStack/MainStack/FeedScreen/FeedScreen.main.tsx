@@ -98,7 +98,7 @@ export default function FeedScreen({ navigation }: Props) {
   };
 
   const NavigationBar = () => {
-    // TODO: Return an AppBar, with a title & a Plus Action Item that goes to the NewSocialScreen.
+    // TODO: Return an AppBar, with a title & a Plus Action Item that goes to the NewItemScreen.
     return (
       <Appbar.Header>
         <Appbar.Content title="Sell" />

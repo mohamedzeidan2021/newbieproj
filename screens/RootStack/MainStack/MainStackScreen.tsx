@@ -4,8 +4,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./HomeScreen/HomeScreen.main";
 import FeedScreen from "./FeedScreen/FeedScreen.main";
 import DetailScreen from "./DetailScreen/DetailScreen.main";
-import NewSocialScreen from "../NewSocialScreen/NewSocialScreen.main";
+import NewItemScreen from "../NewItemScreen/NewItemScreen.main";
+import NewHousingScreen from "../NewHousingScreen/NewHousingScreen.main";
 import ConfirmationScreen from "./ConfirmationScreen/ConfirmationScreen.main";
+import MapScreen from "./MapScreen/MapScreen.main";
 import { SocialModel } from "../../../models/social";
 import { TouchableOpacity, Text } from "react-native";
 
@@ -13,8 +15,10 @@ export type MainStackParamList = {
   HomeScreen: undefined;
   FeedScreen: undefined;
   DetailScreen: { social: SocialModel };
-  NewSocialScreen: undefined;
+  NewItemScreen: undefined;
   ConfirmationScreen: undefined;
+  MapScreen: undefined;
+  NewHousingScreen: undefined;
 };
 
 const MainStack = createStackNavigator<MainStackParamList>();
@@ -71,14 +75,24 @@ export function MainStackScreen() {
         component={DetailScreen}
       />
       <MainStack.Screen
-        name="NewSocialScreen"
+        name="NewItemScreen"
         options={{ headerShown: false }}
-        component={NewSocialScreen}
+        component={NewItemScreen}
+      />
+      <MainStack.Screen
+        name="NewHousingScreen"
+        options={{ headerShown: false }}
+        component={NewHousingScreen}
       />
       <MainStack.Screen
         name="ConfirmationScreen"
         options={{ headerShown: false }}
         component={ConfirmationScreen}
+      />
+      <MainStack.Screen
+        name="MapScreen"
+        options={{ headerShown: false }}
+        component={MapScreen}
       />
     </MainStack.Navigator>
   );

@@ -10,7 +10,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 // See https://docs.expo.io/versions/latest/sdk/imagepicker/
 // Most of the image picker code is directly sourced from the example.
 import * as ImagePicker from "expo-image-picker";
-import { styles } from "./NewSocialScreen.styles";
+import { styles } from "./NewItemScreen.styles";
 
 import { getApp } from "firebase/app";
 import { collection, doc } from "firebase/firestore";
@@ -21,10 +21,10 @@ import { getFirestore, addDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 interface Props {
-  navigation: StackNavigationProp<RootStackParamList, "NewSocialScreen">;
+  navigation: StackNavigationProp<RootStackParamList, "NewItemScreen">;
 }
 
-export default function NewSocialScreen({ navigation }: Props) {
+export default function NewItemScreen({ navigation }: Props) {
   /* TODO: Declare state variables for all of the attributes 
            that you need to keep track of on this screen.
     
