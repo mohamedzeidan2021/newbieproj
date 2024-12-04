@@ -101,8 +101,8 @@ export default function FeedScreen({ navigation }: Props) {
     // TODO: Return an AppBar, with a title & a Plus Action Item that goes to the NewItemScreen.
     return (
       <Appbar.Header>
-        <Appbar.Content title="Socials" />
-        <Appbar.Action icon="plus" onPress={() => navigation.navigate('NewItemScreen')} />
+        <Appbar.Content title="Sell" />
+        <Appbar.Action icon="plus" onPress={() => navigation.navigate('NewSocialScreen')} />
       </Appbar.Header>
     );
   };

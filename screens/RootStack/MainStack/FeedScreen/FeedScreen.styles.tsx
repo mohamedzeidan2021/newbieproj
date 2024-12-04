@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 12,
   },
   cardTitle: {
+    fontFamily: 'Georgia',
     fontSize: 20,
     fontWeight: '600',
     color: '#333333', // Darker text for readability
@@ -34,6 +35,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12, // Padding for better alignment
   },
   cardDate: {
+    fontFamily: 'Georgia',
     fontSize: 14,
     fontWeight: '400',
     color: '#777777', // Subtle gray for less emphasis
@@ -41,6 +43,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12, // Padding for alignment
   },
   cardDescription: {
+    
     fontSize: 16,
     fontWeight: '400',
     color: '#444444', // Slightly darker than the date

@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import { COLOR_ACCENT, COLOR_PRIMARY } from "./AppStyles";
+import { COLOR_ACCENT, COLOR_PRIMARY, AppStyles } from "./AppStyles";
 import { initializeApp, getApps } from "firebase/app";
 import { EntryStackScreen } from "./screens/EntryStackScreen";
 
@@ -24,6 +24,25 @@ const theme = {
     primary: COLOR_PRIMARY,
     accent: COLOR_ACCENT,
   },
+  fonts: {
+    ...DefaultTheme.fonts,
+    regular: {
+      fontFamily: "Georgia", // Set Georgia for regular text
+      fontWeight: "normal",
+    },
+    medium: {
+      fontFamily: "Georgia", // Set Georgia for medium text
+      fontWeight: "500",
+    },
+    light: {
+      fontFamily: "Georgia", // Set Georgia for light text
+      fontWeight: "300",
+    },
+    thin: {
+      fontFamily: "Georgia", // Set Georgia for thin text
+      fontWeight: "100",
+    },
+  },
 };
 
 export default function App() {
@@ -33,8 +52,9 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <EntryStackScreen />
+        <EntryStackScreen style={AppStyles.container} />
       </PaperProvider>
     </SafeAreaProvider>
+    
   );
 }
